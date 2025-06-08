@@ -33,7 +33,7 @@ object DBManager {
         Database.state = true
     }
 
-    object Database{
+     object Database{
         var state : Boolean = false
         private val dataSource: SQLiteDataSource = SQLiteDataSource().apply {
             url = "jdbc:sqlite:src/db/expenses.db"
