@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-}
+    implementation("org.xerial:sqlite-jdbc:3.49.1.0")}
 
 tasks.test {
     useJUnitPlatform()

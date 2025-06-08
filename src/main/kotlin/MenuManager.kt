@@ -1,12 +1,13 @@
 package axan18
 
+import java.time.LocalDate
 import java.util.InputMismatchException
 
 object MenuManager {
 
     @JvmStatic
     public fun addExpense() : Unit{
-        var input : List<String>?
+        var input : List<String>
         while(true){
             try{
                 input = getExpenseInput()
@@ -15,6 +16,9 @@ object MenuManager {
                 println(e)
             }
         }
+        val expense = Transaction(LocalDate.now(), input[0], input[1].toDouble(), input[2])
+        DBManager.insertExpense(expense)
+
     }
     private fun getExpenseInput() : List<String>{
         println("Input 3 values separated by tabs:")
