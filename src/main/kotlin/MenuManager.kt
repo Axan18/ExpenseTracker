@@ -34,6 +34,17 @@ object MenuManager {
     fun viewExpenses(): Unit {
         clearConsole()
         println("EXPENSES")
+        val expenses = DBManager.selectExpenses()
+        println("Date\tDescription\tValue\tCategory")
+        expenses.stream()
+            .map {
+                StringBuilder().append(it.date).append("\t")
+                    .append(it.description).append("\t")
+                    .append(it.value).append("\t")
+                    .append(it.category).append("\t")
+                    .append("\n")
+                    .toString()
+            }.forEach { print(it) }
         println("Pass X to exit")
         while(true){
             val input = readlnOrNull()
