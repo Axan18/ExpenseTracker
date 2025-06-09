@@ -64,6 +64,27 @@ object MenuManager {
     }
 
     fun removeExpense(): Unit {
+        var idToDelete :Int?
+        while(true){
+            clearConsole()
+            println("Provide ID of the expense, that you would like to delete")
+            idToDelete = readln().toIntOrNull()
+            if(idToDelete == null) continue
+            when(DBManager.removeExpense(idToDelete)){
+                true -> println("Expense succesfully deleted")
+                false -> println("Expense has not be deleted")
+            }
+            break
+        }
+        println("Pass X to exit")
+        while(true){
+            val input = readlnOrNull()
+            if(input == "X"){
+                break
+            }
+        }
+        clearConsole()
+
 
     }
 

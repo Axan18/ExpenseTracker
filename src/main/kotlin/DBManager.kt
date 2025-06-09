@@ -47,8 +47,6 @@ object DBManager {
             }
         }
     }
-
-
     private fun ensureDatabaseExists(){
         val dbFile = File("src/db/expenses.db")
         if(!dbFile.exists()){
@@ -67,5 +65,14 @@ object DBManager {
         val statement = connection.createStatement()
         statement.execute("CREATE TABLE IF NOT EXISTS expenses(id INTEGER PRIMARY KEY ,date TEXT NOT NULL, category TEXT, value REAL NOT NULL, description TEXT NOT NULL)")
         connection.close()
+    }
+
+    fun removeExpense(idToDelete: Int) : Boolean {
+        getConnection().use{
+            connection -> connection.prepareStatement("DELETE FROM expenses where ID = ?").use {
+                it.setInt(1,idToDelete)
+                return it.executeUpdate() > 0
+            }
+        }
     }
 }
