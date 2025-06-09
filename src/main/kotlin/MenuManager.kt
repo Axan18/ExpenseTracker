@@ -15,7 +15,7 @@ object MenuManager {
                 println(e)
             }
         }
-        val expense = Transaction(LocalDate.now(), input[0], input[1].toDouble(), input[2])
+        val expense = Transaction(null,LocalDate.now(), input[0], input[1].toDouble(), input[2])
         DBManager.insertExpense(expense)
         clearConsole()
     }
@@ -35,16 +35,19 @@ object MenuManager {
         clearConsole()
         println("EXPENSES")
         val expenses = DBManager.selectExpenses()
-        println("Date\tDescription\tValue\tCategory")
+        println("ID\tDate\tDescription\tValue\tCategory")
         expenses.stream()
             .map {
-                StringBuilder().append(it.date).append("\t")
+                StringBuilder()
+                    .append(it.id).append("\t")
+                    .append(it.date).append("\t")
                     .append(it.description).append("\t")
                     .append(it.value).append("\t")
                     .append(it.category).append("\t")
                     .append("\n")
                     .toString()
             }.forEach { print(it) }
+
         println("Pass X to exit")
         while(true){
             val input = readlnOrNull()
@@ -60,9 +63,8 @@ object MenuManager {
         System.out.flush()
     }
 
-    fun removeExpenses(): Nothing {
+    fun removeExpense(): Unit {
 
-        return TODO("Provide the return value")
     }
 
 }

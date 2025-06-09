@@ -16,7 +16,7 @@ fun main() {
         when(menuOption){
             "1" -> MenuManager.addExpense()
             "2" -> MenuManager.viewExpenses()
-            "3" -> MenuManager.removeExpenses()
+            "3" -> MenuManager.removeExpense()
             "4" -> return
             else -> continue
         }

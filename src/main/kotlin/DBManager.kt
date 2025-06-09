@@ -36,10 +36,11 @@ object DBManager {
                 val expenses = HashSet<Transaction>()
                 while(result.next()){
                     expenses.add(Transaction(
-                        LocalDate.parse(result.getString(1)),
-                        result.getString(2),
-                        result.getDouble(3),
-                        result.getString(4)
+                        result.getInt(1),
+                        LocalDate.parse(result.getString(2)),
+                        result.getString(3),
+                        result.getDouble(4),
+                        result.getString(5)
                     ))
                 }
                 return expenses
@@ -64,7 +65,7 @@ object DBManager {
     private fun createTables(){
         val connection = getConnection()
         val statement = connection.createStatement()
-        statement.execute("CREATE TABLE IF NOT EXISTS expenses(date TEXT NOT NULL, category TEXT, value REAL NOT NULL, description TEXT NOT NULL)")
+        statement.execute("CREATE TABLE IF NOT EXISTS expenses(id INTEGER PRIMARY KEY ,date TEXT NOT NULL, category TEXT, value REAL NOT NULL, description TEXT NOT NULL)")
         connection.close()
     }
 }

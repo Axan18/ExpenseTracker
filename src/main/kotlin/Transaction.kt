@@ -7,6 +7,7 @@ private data class Category(val name: String){
 }
 
 data class Transaction(
+    val id : Int?,
     val date : LocalDate,
     val category : String?,
     val value : Double,
