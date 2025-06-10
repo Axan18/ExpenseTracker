@@ -2,9 +2,12 @@ package axan18
 
 import org.sqlite.SQLiteDataSource
 import java.io.File
+import java.sql.BatchUpdateException
 import java.sql.Connection
 import java.sql.SQLException
+import java.sql.Statement
 import java.time.LocalDate
+import java.util.zip.DataFormatException
 
 object DBManager {
     private val dataSource : SQLiteDataSource = SQLiteDataSource().apply {
@@ -29,11 +32,33 @@ object DBManager {
             }
         }
     }
-    fun selectExpenses() : Set<Transaction>{
+    fun batchInsert(transactions : List<Transaction>){
+        getConnection().use{
+            connection -> connection.prepareStatement(
+            "INSERT INTO expenses(date, category, value, description) VALUES(?,?,?,?)"
+            ).use { statement ->
+                for (transaction in transactions){
+                    statement.setString(1, transaction.date.toString())
+                    statement.setString(4, transaction.category)
+                    statement.setDouble(3, transaction.value)
+                    statement.setString(2, transaction.description)
+                    statement.addBatch()
+                }
+                try{
+                    statement.executeBatch()
+
+                }catch (e : BatchUpdateException){
+                    println(e.message)
+                    throw DataFormatException("Records: ${e.updateCounts.filter { it == Statement.EXECUTE_FAILED }}")
+                }
+            }
+        }
+    }
+    fun selectExpenses() : List<Transaction>{
         getConnection().use{
             connection -> connection.createStatement().use{
-                val result = it.executeQuery("SELECT * FROM expenses")
-                val expenses = HashSet<Transaction>()
+                val result = it.executeQuery("SELECT * FROM expenses order by date desc")
+                val expenses = ArrayList<Transaction>()
                 while(result.next()){
                     expenses.add(Transaction(
                         result.getInt(1),

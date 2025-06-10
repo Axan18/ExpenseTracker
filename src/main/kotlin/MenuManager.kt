@@ -2,6 +2,7 @@ package axan18
 
 import java.time.LocalDate
 import java.util.InputMismatchException
+import javax.swing.JFileChooser
 
 object MenuManager {
      fun addExpense() : Unit{
@@ -38,14 +39,7 @@ object MenuManager {
         println("ID\tDate\tDescription\tValue\tCategory")
         expenses.stream()
             .map {
-                StringBuilder()
-                    .append(it.id).append("\t")
-                    .append(it.date).append("\t")
-                    .append(it.description).append("\t")
-                    .append(it.value).append("\t")
-                    .append(it.category).append("\t")
-                    .append("\n")
-                    .toString()
+                "${it.id}\t${it.date}\t${it.description}\t${it.value}\t${it.category}\n"
             }.forEach { print(it) }
 
         println("Pass X to exit")
@@ -85,6 +79,23 @@ object MenuManager {
         }
         clearConsole()
 
+
+    }
+
+    fun importCSV(): Unit {
+        var chooser : JFileChooser
+        var result : Int
+        while(true){
+            chooser = JFileChooser()
+            result = chooser.showOpenDialog(null)
+            if(result != JFileChooser.APPROVE_OPTION)
+                return
+            break
+        }
+        val csvFile = chooser.selectedFile
+        val transactions = CSVHandler().readCsv(csvFile.inputStream())
+        DBManager.batchInsert(transactions)
+        println("")
 
     }
 

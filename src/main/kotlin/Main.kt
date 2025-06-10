@@ -10,14 +10,18 @@ fun main() {
         1. Add expense
         2. View your expenses
         3. Remove expense
-        4. Exit
+        4. Import from CSV
+        5. Export to CSV
+        6. Exit
     """.trimIndent())
         val menuOption = readln()
         when(menuOption){
             "1" -> MenuManager.addExpense()
             "2" -> MenuManager.viewExpenses()
             "3" -> MenuManager.removeExpense()
-            "4" -> return
+            "4" -> MenuManager.importCSV()
+            //"5" -> MenuManager.exportCSV()
+            "6" -> return
             else -> continue
         }
     }
